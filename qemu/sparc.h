@@ -14,6 +14,7 @@
 #define tb_cleanup tb_cleanup_sparc
 #define memory_map memory_map_sparc
 #define memory_map_ptr memory_map_ptr_sparc
+#define memory_map_mirror memory_map_mirror_sparc
 #define memory_unmap memory_unmap_sparc
 #define memory_free memory_free_sparc
 #define free_code_gen_buffer free_code_gen_buffer_sparc
@@ -136,6 +137,7 @@
 #define arm_reg_read arm_reg_read_sparc
 #define arm_reg_reset arm_reg_reset_sparc
 #define arm_reg_write arm_reg_write_sparc
+#define arm_set_context_reg arm_set_context_reg_sparc
 #define restore_state_to_opc restore_state_to_opc_sparc
 #define arm_rmode_to_sf arm_rmode_to_sf_sparc
 #define arm_singlestep_active arm_singlestep_active_sparc

@@ -14,6 +14,7 @@
 #define tb_cleanup tb_cleanup_mipsel
 #define memory_map memory_map_mipsel
 #define memory_map_ptr memory_map_ptr_mipsel
+#define memory_map_mirror memory_map_mirror_mipsel
 #define memory_unmap memory_unmap_mipsel
 #define memory_free memory_free_mipsel
 #define free_code_gen_buffer free_code_gen_buffer_mipsel
@@ -136,6 +137,7 @@
 #define arm_reg_read arm_reg_read_mipsel
 #define arm_reg_reset arm_reg_reset_mipsel
 #define arm_reg_write arm_reg_write_mipsel
+#define arm_set_context_reg arm_set_context_reg_mipsel
 #define restore_state_to_opc restore_state_to_opc_mipsel
 #define arm_rmode_to_sf arm_rmode_to_sf_mipsel
 #define arm_singlestep_active arm_singlestep_active_mipsel

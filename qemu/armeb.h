@@ -14,6 +14,7 @@
 #define tb_cleanup tb_cleanup_armeb
 #define memory_map memory_map_armeb
 #define memory_map_ptr memory_map_ptr_armeb
+#define memory_map_mirror memory_map_mirror_armeb
 #define memory_unmap memory_unmap_armeb
 #define memory_free memory_free_armeb
 #define free_code_gen_buffer free_code_gen_buffer_armeb
@@ -136,6 +137,7 @@
 #define arm_reg_read arm_reg_read_armeb
 #define arm_reg_reset arm_reg_reset_armeb
 #define arm_reg_write arm_reg_write_armeb
+#define arm_set_context_reg arm_set_context_reg_armeb
 #define restore_state_to_opc restore_state_to_opc_armeb
 #define arm_rmode_to_sf arm_rmode_to_sf_armeb
 #define arm_singlestep_active arm_singlestep_active_armeb

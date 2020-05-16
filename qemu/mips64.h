@@ -14,6 +14,7 @@
 #define tb_cleanup tb_cleanup_mips64
 #define memory_map memory_map_mips64
 #define memory_map_ptr memory_map_ptr_mips64
+#define memory_map_mirror memory_map_mirror_mips64
 #define memory_unmap memory_unmap_mips64
 #define memory_free memory_free_mips64
 #define free_code_gen_buffer free_code_gen_buffer_mips64
@@ -136,6 +137,7 @@
 #define arm_reg_read arm_reg_read_mips64
 #define arm_reg_reset arm_reg_reset_mips64
 #define arm_reg_write arm_reg_write_mips64
+#define arm_set_context_reg arm_set_context_reg_mips64
 #define restore_state_to_opc restore_state_to_opc_mips64
 #define arm_rmode_to_sf arm_rmode_to_sf_mips64
 #define arm_singlestep_active arm_singlestep_active_mips64

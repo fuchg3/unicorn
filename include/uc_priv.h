@@ -50,6 +50,8 @@ typedef int (*reg_write_t)(struct uc_struct *uc, unsigned int *regs, void *const
 
 typedef void (*reg_reset_t)(struct uc_struct *uc);
 
+typedef uc_err (*set_context_reg_t)(struct uc_context *context, unsigned int regid, void *const value);
+
 typedef bool (*uc_write_mem_t)(AddressSpace *as, hwaddr addr, const uint8_t *buf, int len);
 
 typedef bool (*uc_read_mem_t)(AddressSpace *as, hwaddr addr, uint8_t *buf, int len);
@@ -65,9 +67,11 @@ typedef void (*uc_args_uc_long_t)(struct uc_struct*, unsigned long);
 
 typedef void (*uc_args_uc_u64_t)(struct uc_struct *, uint64_t addr);
 
-typedef MemoryRegion* (*uc_args_uc_ram_size_t)(struct uc_struct*,  hwaddr begin, size_t size, uint32_t perms);
+typedef MemoryRegion* (*uc_args_uc_ram_size_t)(struct uc_struct*, hwaddr begin, size_t size, uint32_t perms);
 
-typedef MemoryRegion* (*uc_args_uc_ram_size_ptr_t)(struct uc_struct*,  hwaddr begin, size_t size, uint32_t perms, void *ptr);
+typedef MemoryRegion* (*uc_args_uc_ram_size_ptr_t)(struct uc_struct*, hwaddr begin, size_t size, uint32_t perms, void *ptr);
+
+typedef MemoryRegion* (*uc_args_uc_ram_size_mirror_t)(struct uc_struct*, hwaddr source, hwaddr target, size_t size, uint32_t perms);
 
 typedef void (*uc_mem_unmap_t)(struct uc_struct*, MemoryRegion *mr);
 
@@ -155,6 +159,8 @@ struct uc_struct {
     reg_write_t reg_write;
     reg_reset_t reg_reset;
 
+    set_context_reg_t set_context_reg;
+
     uc_write_mem_t write_mem;
     uc_read_mem_t read_mem;
     uc_args_void_t release;     // release resource when uc_close()
@@ -167,6 +173,7 @@ struct uc_struct {
     uc_args_uc_long_t tcg_exec_init;
     uc_args_uc_ram_size_t memory_map;
     uc_args_uc_ram_size_ptr_t memory_map_ptr;
+    uc_args_uc_ram_size_mirror_t memory_map_mirror;
     uc_mem_unmap_t memory_unmap;
     uc_readonly_mem_t readonly_mem;
     uc_mem_redirect_t mem_redirect;

@@ -26,4 +26,9 @@ extern const int ARM_REGS_STORAGE_SIZE_armeb;
 extern const int ARM64_REGS_STORAGE_SIZE_aarch64;
 extern const int ARM64_REGS_STORAGE_SIZE_aarch64eb;
 
+<<<<<<< HEAD
+=======
+uc_err arm_set_context_reg(struct uc_context* context, unsigned int regid, void *const value);
+
+>>>>>>> modified
 #endif

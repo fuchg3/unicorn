@@ -14,6 +14,7 @@
 #define tb_cleanup tb_cleanup_m68k
 #define memory_map memory_map_m68k
 #define memory_map_ptr memory_map_ptr_m68k
+#define memory_map_mirror memory_map_mirror_m68k
 #define memory_unmap memory_unmap_m68k
 #define memory_free memory_free_m68k
 #define free_code_gen_buffer free_code_gen_buffer_m68k
@@ -136,6 +137,7 @@
 #define arm_reg_read arm_reg_read_m68k
 #define arm_reg_reset arm_reg_reset_m68k
 #define arm_reg_write arm_reg_write_m68k
+#define arm_set_context_reg arm_set_context_reg_m68k
 #define restore_state_to_opc restore_state_to_opc_m68k
 #define arm_rmode_to_sf arm_rmode_to_sf_m68k
 #define arm_singlestep_active arm_singlestep_active_m68k

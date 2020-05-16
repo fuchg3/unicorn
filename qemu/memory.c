@@ -66,6 +66,23 @@ MemoryRegion *memory_map_ptr(struct uc_struct *uc, hwaddr begin, size_t size, ui
     return ram;
 }
 
+MemoryRegion *memory_map_mirror(struct uc_struct *uc, hwaddr source, hwaddr target, size_t size, uint32_t perms)
+{
+    MemoryRegion *ram = g_new(MemoryRegion, 1);
+
+    MemoryRegion *orig = memory_mapping(uc, target);
+    hwaddr offset = target - orig->addr;
+    memory_region_init_alias(uc, ram, NULL, "pc.ram.alias", orig, offset, size);
+    ram->perms = perms;
+
+    memory_region_add_subregion(get_system_memory(uc), source, ram);
+
+    if (uc->current_cpu)
+        tlb_flush(uc->current_cpu, 1);
+
+    return ram;
+}
+
 static void memory_region_update_container_subregions(MemoryRegion *subregion);
 
 void memory_unmap(struct uc_struct *uc, MemoryRegion *mr)

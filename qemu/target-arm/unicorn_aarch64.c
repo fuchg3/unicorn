@@ -73,6 +73,7 @@ int arm64_reg_read(struct uc_struct *uc, unsigned int *regs, void **vals, int co
             *(int16_t*)value = READ_WORD(ARM_CPU(uc, mycpu)->env.vfp.regs[2*(regid - UC_ARM64_REG_H0)]);
         } else if (regid >= UC_ARM64_REG_B0 && regid <= UC_ARM64_REG_B31) {
             *(int8_t*)value = READ_BYTE_L(ARM_CPU(uc, mycpu)->env.vfp.regs[2*(regid - UC_ARM64_REG_B0)]);
+<<<<<<< HEAD
         } else if (regid >= UC_ARM64_REG_ELR_EL0 && regid <= UC_ARM64_REG_ELR_EL3) {
             *(uint64_t*)value = ARM_CPU(uc, mycpu)->env.elr_el[regid - UC_ARM64_REG_ELR_EL0];
         } else if (regid >= UC_ARM64_REG_SP_EL0 && regid <= UC_ARM64_REG_SP_EL3) {
@@ -83,6 +84,8 @@ int arm64_reg_read(struct uc_struct *uc, unsigned int *regs, void **vals, int co
             *(uint64_t*)value = ARM_CPU(uc, mycpu)->env.cp15.far_el[regid - UC_ARM64_REG_FAR_EL0];
         } else if (regid >= UC_ARM64_REG_VBAR_EL0 && regid <= UC_ARM64_REG_VBAR_EL3) {
             *(uint64_t*)value = ARM_CPU(uc, mycpu)->env.cp15.vbar_el[regid - UC_ARM64_REG_VBAR_EL0];
+=======
+>>>>>>> modified
         } else {
             switch(regid) {
                 default: break;
@@ -113,6 +116,7 @@ int arm64_reg_read(struct uc_struct *uc, unsigned int *regs, void **vals, int co
                 case UC_ARM64_REG_NZCV:
                     *(int32_t *)value = cpsr_read(&ARM_CPU(uc, mycpu)->env) & CPSR_NZCV;
                     break;
+<<<<<<< HEAD
                 case UC_ARM64_REG_PSTATE:
                     *(uint32_t *)value = pstate_read(&ARM_CPU(uc, mycpu)->env);
                     break;
@@ -128,6 +132,8 @@ int arm64_reg_read(struct uc_struct *uc, unsigned int *regs, void **vals, int co
                 case UC_ARM64_REG_MAIR_EL1:
                     *(uint64_t *)value = ARM_CPU(uc, mycpu)->env.cp15.mair_el1;
                     break;
+=======
+>>>>>>> modified
             }
         }
     }
@@ -163,6 +169,7 @@ int arm64_reg_write(struct uc_struct *uc, unsigned int *regs, void* const* vals,
             WRITE_WORD(ARM_CPU(uc, mycpu)->env.vfp.regs[2*(regid - UC_ARM64_REG_H0)], *(int16_t*) value);
         } else if (regid >= UC_ARM64_REG_B0 && regid <= UC_ARM64_REG_B31) {
             WRITE_BYTE_L(ARM_CPU(uc, mycpu)->env.vfp.regs[2*(regid - UC_ARM64_REG_B0)], *(int8_t*) value);
+<<<<<<< HEAD
         } else if (regid >= UC_ARM64_REG_ELR_EL0 && regid <= UC_ARM64_REG_ELR_EL3) {
             ARM_CPU(uc, mycpu)->env.elr_el[regid - UC_ARM64_REG_ELR_EL0] = *(uint64_t*)value;
         } else if (regid >= UC_ARM64_REG_SP_EL0 && regid <= UC_ARM64_REG_SP_EL3) {
@@ -173,6 +180,8 @@ int arm64_reg_write(struct uc_struct *uc, unsigned int *regs, void* const* vals,
             ARM_CPU(uc, mycpu)->env.cp15.far_el[regid - UC_ARM64_REG_FAR_EL0] = *(uint64_t*)value;
         } else if (regid >= UC_ARM64_REG_VBAR_EL0 && regid <= UC_ARM64_REG_VBAR_EL3) {
             ARM_CPU(uc, mycpu)->env.cp15.vbar_el[regid - UC_ARM64_REG_VBAR_EL0] = *(uint64_t*)value;
+=======
+>>>>>>> modified
         } else {
             switch(regid) {
                 default: break;
@@ -204,6 +213,7 @@ int arm64_reg_write(struct uc_struct *uc, unsigned int *regs, void* const* vals,
                     ARM_CPU(uc, mycpu)->env.xregs[31] = *(uint64_t *)value;
                     break;
                 case UC_ARM64_REG_NZCV:
+<<<<<<< HEAD
                     cpsr_write(&ARM_CPU(uc, mycpu)->env, *(uint32_t *)value, CPSR_NZCV);
                     break;
                 case UC_ARM64_REG_PSTATE:
@@ -220,6 +230,9 @@ int arm64_reg_write(struct uc_struct *uc, unsigned int *regs, void* const* vals,
                     break;
                 case UC_ARM64_REG_MAIR_EL1:
                     ARM_CPU(uc, mycpu)->env.cp15.mair_el1 = *(uint64_t *)value;
+=======
+                    cpsr_write(&ARM_CPU(uc, mycpu)->env, *(uint32_t *) value, CPSR_NZCV);
+>>>>>>> modified
                     break;
             }
         }

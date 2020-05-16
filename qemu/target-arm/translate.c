@@ -63,7 +63,10 @@ static TCGv_i64 cpu_exclusive_test;
 static TCGv_i32 cpu_exclusive_info;
 #endif
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> modified
 static const char *regnames[] =
     { "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7",
       "r8", "r9", "r10", "r11", "r12", "r13", "r14", "pc" };
@@ -868,6 +871,13 @@ static inline void store_reg_bx(DisasContext *s, int reg, TCGv_i32 var)
         gen_bx(s, var);
     } else {
         store_reg(s, reg, var);
+<<<<<<< HEAD
+=======
+        if (reg == 15) {
+            /* [ADD](except MOV) pc, <Rd>, <Rm> ... ? */
+            // s->tb->cycle_count += 6;
+        }
+>>>>>>> modified
     }
 }
 
@@ -4116,8 +4126,15 @@ static int gen_set_psr(DisasContext *s, uint32_t mask, int spsr, TCGv_i32 t0)
         tcg_gen_andi_i32(tcg_ctx, t0, t0, mask);
         tcg_gen_or_i32(tcg_ctx, tmp, tmp, t0);
         store_cpu_field(tcg_ctx, tmp, spsr);
+<<<<<<< HEAD
     } else {
         gen_set_cpsr(s, t0, mask);
+=======
+        // s->tb->cycle_count += 5;
+    } else {
+        gen_set_cpsr(s, t0, mask);
+        // s->tb->cycle_count += 4;
+>>>>>>> modified
     }
     tcg_temp_free_i32(tcg_ctx, t0);
     gen_lookup_tb(s);
@@ -7758,6 +7775,10 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
             }
             /* Otherwise PLD; v5TE+ */
             ARCH(5TE);
+<<<<<<< HEAD
+=======
+            // s->tb->cycle_count += 1;
+>>>>>>> modified
             return;
         }
         if (((insn & 0x0f70f000) == 0x0450f000) ||
@@ -7781,6 +7802,10 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
                 qemu_log_mask(LOG_UNIMP, "arm: unimplemented setend\n");
                 goto illegal_op;
             }
+<<<<<<< HEAD
+=======
+            // s->tb->cycle_count += 1;
+>>>>>>> modified
             return;
         } else if ((insn & 0x0fffff00) == 0x057ff000) {
             switch ((insn >> 4) & 0xf) {
@@ -7862,6 +7887,10 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
             val += 4;
             /* protected by ARCH(5); above, near the start of uncond block */
             gen_bx_im(s, val);
+<<<<<<< HEAD
+=======
+            // s->tb->cycle_count += 1;
+>>>>>>> modified
             return;
         } else if ((insn & 0x0e000f00) == 0x0c000100) {
             if (arm_dc_feature(s, ARM_FEATURE_IWMMXT)) {
@@ -7901,6 +7930,10 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
             if (mask) {
                 gen_set_psr_im(s, mask, 0, val);
             }
+<<<<<<< HEAD
+=======
+            // s->tb->cycle_count += 1;
+>>>>>>> modified
             return;
         }
         goto illegal_op;
@@ -7972,6 +8005,10 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
                     gen_helper_cpsr_read(tcg_ctx, tmp, tcg_ctx->cpu_env);
                 }
                 store_reg(s, rd, tmp);
+<<<<<<< HEAD
+=======
+                // s->tb->cycle_count += 1;
+>>>>>>> modified
             }
             break;
         case 0x1:
@@ -7980,6 +8017,11 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
                 ARCH(4T);
                 tmp = load_reg(s, rm);
                 gen_bx(s, tmp);
+<<<<<<< HEAD
+=======
+                /* BX <cond> <reg> ? */
+                // s->tb->cycle_count += 5;
+>>>>>>> modified
             } else if (op1 == 3) {
                 /* clz */
                 ARCH(5);
@@ -7987,6 +8029,10 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
                 tmp = load_reg(s, rm);
                 gen_helper_clz(tcg_ctx, tmp, tmp);
                 store_reg(s, rd, tmp);
+<<<<<<< HEAD
+=======
+                // s->tb->cycle_count += 1;
+>>>>>>> modified
             } else {
                 goto illegal_op;
             }
@@ -8012,6 +8058,10 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
             tcg_gen_movi_i32(tcg_ctx, tmp2, s->pc);
             store_reg(s, 14, tmp2);
             gen_bx(s, tmp);
+<<<<<<< HEAD
+=======
+            // s->tb->cycle_count += 5;
+>>>>>>> modified
             break;
         case 0x4:
         {
@@ -8062,6 +8112,11 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
                 gen_helper_add_saturate(tcg_ctx, tmp, tcg_ctx->cpu_env, tmp, tmp2);
             tcg_temp_free_i32(tcg_ctx, tmp2);
             store_reg(s, rd, tmp);
+<<<<<<< HEAD
+=======
+            /* QADD, QDADD, QSUB, QDSUB */
+            // s->tb->cycle_count += 1;
+>>>>>>> modified
             break;
         case 7:
         {
@@ -8072,6 +8127,10 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
                 ARCH(5);
                 gen_exception_insn(s, 4, EXCP_BKPT,
                                    syn_aa32_bkpt(imm16, false));
+<<<<<<< HEAD
+=======
+                // s->tb->cycle_count += 8;
+>>>>>>> modified
                 break;
             case 2:
                 /* Hypervisor call (v7) */
@@ -8121,6 +8180,11 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
                     tcg_temp_free_i32(tcg_ctx, tmp2);
                 }
                 store_reg(s, rd, tmp);
+<<<<<<< HEAD
+=======
+                /* SMULWy */
+                // s->tb->cycle_count += 1;
+>>>>>>> modified
             } else {
                 /* 16 * 16 */
                 tmp = load_reg(s, rm);
@@ -8142,6 +8206,11 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
                     }
                     store_reg(s, rd, tmp);
                 }
+<<<<<<< HEAD
+=======
+                /* SMULxy */
+                // s->tb->cycle_count += 1;
+>>>>>>> modified
             }
             break;
         default:
@@ -8169,6 +8238,10 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
             if (logic_cc && shift) {
                 gen_set_CF_bit31(s, tmp2);
             }
+<<<<<<< HEAD
+=======
+            // s->tb->cycle_count += 1;
+>>>>>>> modified
         } else {
             /* register */
             rm = (insn) & 0xf;
@@ -8177,10 +8250,20 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
             if (!(insn & (1 << 4))) {
                 shift = (insn >> 7) & 0x1f;
                 gen_arm_shift_im(s, tmp2, shiftop, shift, logic_cc);
+<<<<<<< HEAD
+=======
+                /* [ADD] <Rd>, <Rn>, <Rm>, LSL #<immed> ? */
+                // s->tb->cycle_count += 1;
+>>>>>>> modified
             } else {
                 rs = (insn >> 8) & 0xf;
                 tmp = load_reg(s, rs);
                 gen_arm_shift_reg(s, tmp2, shiftop, tmp, logic_cc);
+<<<<<<< HEAD
+=======
+                /* [ADD] <Rd>, <Rn>, <Rm>, LSL <Rs> ? */
+                // s->tb->cycle_count += 2;
+>>>>>>> modified
             }
         }
         if (op1 != 0x0f && op1 != 0x0d) {
@@ -8302,6 +8385,10 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
                     goto illegal_op;
                 }
                 gen_exception_return(s, tmp2);
+<<<<<<< HEAD
+=======
+                // s->tb->cycle_count += 4;
+>>>>>>> modified
             } else {
                 if (logic_cc) {
                     gen_logic_CC(s, tmp2);
@@ -8365,6 +8452,10 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
                         if (insn & (1 << 20))
                             gen_logic_CC(s, tmp);
                         store_reg(s, rd, tmp);
+<<<<<<< HEAD
+=======
+                        // s->tb->cycle_count += 2;
+>>>>>>> modified
                         break;
                     case 4:
                         /* 64 bit mul double accumulate (UMAAL) */
@@ -8376,6 +8467,10 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
                         gen_addq_lo(s, tmp64, rd);
                         gen_storeq_reg(s, rn, rd, tmp64);
                         tcg_temp_free_i64(tcg_ctx, tmp64);
+<<<<<<< HEAD
+=======
+                        // s->tb->cycle_count += 3;
+>>>>>>> modified
                         break;
                     case 8: case 9: case 10: case 11:
                     case 12: case 13: case 14: case 15:
@@ -8399,6 +8494,10 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
                         }
                         store_reg(s, rn, tmp);
                         store_reg(s, rd, tmp2);
+<<<<<<< HEAD
+=======
+                        // s->tb->cycle_count += 3;
+>>>>>>> modified
                         break;
                     default:
                         goto illegal_op;
@@ -8442,6 +8541,7 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
                             if (insn & (1 << 20)) {
                                 tmp = tcg_temp_new_i32(tcg_ctx);
                                 switch (op1) {
+<<<<<<< HEAD
                                 case 0: /* lda */
                                     gen_aa32_ld32u(s, tmp, addr, get_mem_index(s));
                                     break;
@@ -8449,6 +8549,15 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
                                     gen_aa32_ld8u(s, tmp, addr, get_mem_index(s));
                                     break;
                                 case 3: /* ldah */
+=======
+                                case 0: /* ldr */
+                                    gen_aa32_ld32u(s, tmp, addr, get_mem_index(s));
+                                    break;
+                                case 2: /* ldrb */
+                                    gen_aa32_ld8u(s, tmp, addr, get_mem_index(s));
+                                    break;
+                                case 3: /* ldrh */
+>>>>>>> modified
                                     gen_aa32_ld16u(s, tmp, addr, get_mem_index(s));
                                     break;
                                 default:
@@ -8459,6 +8568,7 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
                                 rm = insn & 0xf;
                                 tmp = load_reg(s, rm);
                                 switch (op1) {
+<<<<<<< HEAD
                                 case 0: /* stl */
                                     gen_aa32_st32(s, tmp, addr, get_mem_index(s));
                                     break;
@@ -8466,6 +8576,15 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
                                     gen_aa32_st8(s, tmp, addr, get_mem_index(s));
                                     break;
                                 case 3: /* stlh */
+=======
+                                case 0: /* str */
+                                    gen_aa32_st32(s, tmp, addr, get_mem_index(s));
+                                    break;
+                                case 2: /* strb */
+                                    gen_aa32_st8(s, tmp, addr, get_mem_index(s));
+                                    break;
+                                case 3: /* strh */
+>>>>>>> modified
                                     gen_aa32_st16(s, tmp, addr, get_mem_index(s));
                                     break;
                                 default:
@@ -8473,6 +8592,10 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
                                 }
                                 tcg_temp_free_i32(tcg_ctx, tmp);
                             }
+<<<<<<< HEAD
+=======
+                            // s->tb->cycle_count += 1;
+>>>>>>> modified
                         } else if (insn & (1 << 20)) {
                             switch (op1) {
                             case 0: /* ldrex */
@@ -8490,6 +8613,10 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
                             default:
                                 abort();
                             }
+<<<<<<< HEAD
+=======
+                            // s->tb->cycle_count += 1;
+>>>>>>> modified
                         } else {
                             rm = insn & 0xf;
                             switch (op1) {
@@ -8508,6 +8635,10 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
                             default:
                                 abort();
                             }
+<<<<<<< HEAD
+=======
+                            // s->tb->cycle_count += 1;
+>>>>>>> modified
                         }
                         tcg_temp_free_i32(tcg_ctx, addr);
                     } else {
@@ -8530,6 +8661,10 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
                         tcg_temp_free_i32(tcg_ctx, tmp);
                         tcg_temp_free_i32(tcg_ctx, addr);
                         store_reg(s, rd, tmp2);
+<<<<<<< HEAD
+=======
+                        // s->tb->cycle_count += 2;
+>>>>>>> modified
                     }
                 }
             } else {
@@ -8615,6 +8750,10 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
                     /* Complete the load.  */
                     store_reg(s, rd, tmp);
                 }
+<<<<<<< HEAD
+=======
+                // s->tb->cycle_count += 1;
+>>>>>>> modified
             }
             break;
         case 0x4:
@@ -8640,6 +8779,10 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
                     gen_arm_parallel_addsub(s, op1, sh, tmp, tmp2);
                     tcg_temp_free_i32(tcg_ctx, tmp2);
                     store_reg(s, rd, tmp);
+<<<<<<< HEAD
+=======
+                    // s->tb->cycle_count += 1;
+>>>>>>> modified
                     break;
                 case 1:
                     if ((insn & 0x00700020) == 0) {
@@ -8751,6 +8894,11 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
                     } else {
                         goto illegal_op;
                     }
+<<<<<<< HEAD
+=======
+                    /* media data processing */
+                    // s->tb->cycle_count += 1;
+>>>>>>> modified
                     break;
                 case 2: /* Multiplies (Type 3).  */
                     switch ((insn >> 20) & 0x7) {
@@ -8781,6 +8929,10 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
                         tcg_gen_trunc_i64_i32(tcg_ctx, tmp, tmp64);
                         tcg_temp_free_i64(tcg_ctx, tmp64);
                         store_reg(s, rn, tmp);
+<<<<<<< HEAD
+=======
+                        // s->tb->cycle_count += 2;
+>>>>>>> modified
                         break;
                     case 0:
                     case 4:
@@ -8812,6 +8964,10 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
                             gen_addq(s, tmp64, rd, rn);
                             gen_storeq_reg(s, rd, rn, tmp64);
                             tcg_temp_free_i64(tcg_ctx, tmp64);
+<<<<<<< HEAD
+=======
+                            // s->tb->cycle_count += 2;
+>>>>>>> modified
                         } else {
                             /* smuad, smusd, smlad, smlsd */
                             if (insn & (1 << 6)) {
@@ -8833,6 +8989,10 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
                                 tcg_temp_free_i32(tcg_ctx, tmp2);
                               }
                             store_reg(s, rn, tmp);
+<<<<<<< HEAD
+=======
+                            // s->tb->cycle_count += 1;
+>>>>>>> modified
                         }
                         break;
                     case 1:
@@ -8873,6 +9033,10 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
                             tcg_temp_free_i32(tcg_ctx, tmp2);
                         }
                         store_reg(s, rn, tmp);
+<<<<<<< HEAD
+=======
+                        // s->tb->cycle_count += 1;
+>>>>>>> modified
                         break;
                     case 0x20: case 0x24: case 0x28: case 0x2c:
                         /* Bitfield insert/clear.  */
@@ -8969,6 +9133,10 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
                 /* Complete the load.  */
                 store_reg_from_load(s, rd, tmp);
             }
+<<<<<<< HEAD
+=======
+            // s->tb->cycle_count += 1;
+>>>>>>> modified
             break;
         case 0x08:
         case 0x09:
@@ -9089,6 +9257,10 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
                     tcg_temp_free_i32(tcg_ctx, tmp);
                     s->is_jmp = DISAS_UPDATE;
                 }
+<<<<<<< HEAD
+=======
+                // s->tb->cycle_count += 1;
+>>>>>>> modified
             }
             break;
         case 0xa:
@@ -9106,6 +9278,10 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
                 offset = sextract32(insn << 2, 0, 26);
                 val += offset + 4;
                 gen_jmp(s, val);
+<<<<<<< HEAD
+=======
+                // s->tb->cycle_count += 1;
+>>>>>>> modified
             }
             break;
         case 0xc:
@@ -9126,6 +9302,10 @@ static void disas_arm_insn(DisasContext *s, unsigned int insn)  // qq
             gen_set_pc_im(s, s->pc);
             s->svc_imm = extract32(insn, 0, 24);
             s->is_jmp = DISAS_SWI;
+<<<<<<< HEAD
+=======
+            // s->tb->cycle_count += 8;
+>>>>>>> modified
             break;
         default:
         illegal_op:
@@ -11259,7 +11439,11 @@ static inline void gen_intermediate_code_internal(ARMCPU *cpu,
     // Unicorn: early check to see if the address of this block is the until address
     if (tb->pc == env->uc->addr_end) {
         // imitate WFI instruction to halt emulation
+<<<<<<< HEAD
         gen_tb_start(tcg_ctx);
+=======
+        gen_tb_start(tcg_ctx, tb);
+>>>>>>> modified
         dc->is_jmp = DISAS_WFI;
         goto tb_end;
     }
@@ -11276,7 +11460,11 @@ static inline void gen_intermediate_code_internal(ARMCPU *cpu,
         env->uc->size_arg = -1;
     }
 
+<<<<<<< HEAD
     gen_tb_start(tcg_ctx);
+=======
+    gen_tb_start(tcg_ctx, tb);
+>>>>>>> modified
 
     /* A note on handling of the condexec (IT) bits:
      *
@@ -11359,11 +11547,20 @@ static inline void gen_intermediate_code_internal(ARMCPU *cpu,
             tcg_ctx->gen_opc_pc[lj] = dc->pc;
             tcg_ctx->gen_opc_condexec_bits[lj] = (dc->condexec_cond << 4) | (dc->condexec_mask >> 1);
             tcg_ctx->gen_opc_instr_start[lj] = 1;
+<<<<<<< HEAD
             //tcg_ctx->gen_opc_icount[lj] = num_insns;
         }
 
         //if (num_insns + 1 == max_insns && (tb->cflags & CF_LAST_IO))
         //    gen_io_start();
+=======
+            tcg_ctx->gen_opc_icount[lj] = num_insns;
+        }
+
+        if (num_insns + 1 == max_insns && (tb->cflags & CF_LAST_IO)) {
+            gen_io_start(tcg_ctx);
+        }
+>>>>>>> modified
 
         if (unlikely(qemu_loglevel_mask(CPU_LOG_TB_OP | CPU_LOG_TB_OP_OPT))) {
             tcg_gen_debug_insn_start(tcg_ctx, dc->pc);
@@ -11432,11 +11629,18 @@ static inline void gen_intermediate_code_internal(ARMCPU *cpu,
 
     if (tb->cflags & CF_LAST_IO) {
         if (dc->condjmp) {
+<<<<<<< HEAD
             /* FIXME:  This can theoretically happen with self-modifying
                code.  */
             cpu_abort(cs, "IO on conditional branch instruction");
         }
         //gen_io_end();
+=======
+            /* FIXME: This can theoretically happen with self-modifying code. */
+            cpu_abort(cs, "IO on conditional branch instruction");
+        }
+        gen_io_end(tcg_ctx);
+>>>>>>> modified
     }
 
     /* if too long translation, save this info */

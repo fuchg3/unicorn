@@ -746,7 +746,6 @@ uc_err uc_context_save(uc_engine *uc, uc_context *context);
 UNICORN_EXPORT
 uc_err uc_context_restore(uc_engine *uc, uc_context *context);
 
-
 /*
   Return the size needed to store the cpu context. Can be used to allocate a buffer
   to contain the cpu context and directly call uc_context_save.
@@ -757,6 +756,18 @@ uc_err uc_context_restore(uc_engine *uc, uc_context *context);
 */
 UNICORN_EXPORT
 size_t uc_context_size(uc_engine *uc);
+
+UNICORN_EXPORT
+uc_err uc_emu_run(uc_engine *uc, uint64_t timeout, size_t count);
+
+UNICORN_EXPORT
+uc_err uc_query_region(uc_engine *uc, uint64_t address, uc_mem_region **region);
+
+UNICORN_EXPORT
+uc_err uc_mem_map_mirror(uc_engine *uc, uint64_t source, uint64_t target, size_t size, uint32_t perms);
+
+UNICORN_EXPORT
+uc_err uc_set_context_reg(uc_engine *uc, uc_context* context, int regid, void* const value);
 
 #ifdef __cplusplus
 }

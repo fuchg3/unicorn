@@ -16,11 +16,7 @@
 #include "uc_priv.h"
 
 // target specific headers
-#include "qemu/target-m68k/unicorn.h"
-#include "qemu/target-i386/unicorn.h"
 #include "qemu/target-arm/unicorn.h"
-#include "qemu/target-mips/unicorn.h"
-#include "qemu/target-sparc/unicorn.h"
 
 #include "qemu/include/hw/boards.h"
 #include "qemu/include/qemu/queue.h"
@@ -353,7 +349,7 @@ uc_err uc_close(uc_engine *uc)
     // finally, free uc itself.
     memset(uc, 0, sizeof(*uc));
     free(uc);
-    
+
     return UC_ERR_OK;
 }
 
@@ -535,7 +531,7 @@ static void clear_deleted_hooks(uc_engine *uc)
     struct list_item * cur;
     struct hook * hook;
     int i;
-    
+
     for (cur = uc->hooks_to_del.head; cur != NULL && (hook = (struct hook *)cur->data); cur = cur->next) {
         assert(hook->to_delete);
         for (i = 0; i < UC_HOOK_MAX; i++) {
@@ -1357,4 +1353,105 @@ uc_err uc_context_restore(uc_engine *uc, uc_context *context)
     struct uc_context *_context = context;
     memcpy(uc->cpu->env_ptr, _context->data, _context->size);
     return UC_ERR_OK;
+}
+
+
+UNICORN_EXPORT
+uc_err uc_emu_run(uc_engine *uc, uint64_t timeout, size_t count) 
+{
+    // reset the counter
+    uc->emu_counter = 0;
+    uc->invalid_error = UC_ERR_OK;
+    uc->block_full = false;
+    uc->emulation_done = false;
+    uc->timed_out = false;
+    
+    uc->stop_request = false;
+
+    uc->emu_count = count;
+    // remove count hook if counting isn't necessary
+    if (count <= 0 && uc->count_hook != 0) {
+        uc_hook_del(uc, uc->count_hook);
+        uc->count_hook = 0;
+    }
+    // set up count hook to count instructions.
+    if (count > 0 && uc->count_hook == 0) {
+        uc_err err;
+        // callback to count instructions must be run before everything else,
+        // so instead of appending, we must insert the hook at the begin
+        // of the hook list
+        uc->hook_insert = 1;
+        err = uc_hook_add(uc, &uc->count_hook, UC_HOOK_CODE, hook_count_cb, NULL, 1, 0);
+        // restore to append mode for uc_hook_add()
+        uc->hook_insert = 0;
+        if (err != UC_ERR_OK) {
+        return err;
+        }
+    }
+    
+    // end address of new 3DS userland memory
+    uc->addr_end = 0x40000000;
+    
+    if (timeout) {
+        enable_emu_timer(uc, timeout * 1000);   // microseconds -> nanoseconds
+    }
+    
+    if (uc->vm_start(uc)) {
+        return UC_ERR_RESOURCE;
+    }
+    
+    // emulation is done
+    uc->emulation_done = true;
+    
+    return (uc_err) uc->invalid_error;
+}
+
+UNICORN_EXPORT
+uc_err uc_query_region(uc_engine *uc, uint64_t address, uc_mem_region **region)
+{
+    
+    MemoryRegion *memory_region = memory_mapping(uc, address);
+    
+    if (memory_region == NULL) {
+        *region = NULL;
+    } else {
+        *region = g_malloc0(sizeof(uc_mem_region));
+        if (*region == NULL) {
+        // out of memory
+        return UC_ERR_NOMEM;
+        }
+        (*region)->begin = memory_region->addr;
+        (*region)->end = memory_region->end - 1;
+        (*region)->perms = memory_region->perms;
+    }
+    
+    return UC_ERR_OK;
+}
+
+UNICORN_EXPORT
+uc_err uc_mem_map_mirror(uc_engine *uc, uint64_t source, uint64_t target, size_t size, uint32_t perms)
+{
+    uc_err res;
+
+    if (uc->mem_redirect) {
+        source = uc->mem_redirect(source);
+        target = uc->mem_redirect(target);
+    }
+
+    res = mem_map_check(uc, source, size, perms);
+    if (res)
+        return res;
+
+    return mem_map(uc, source, size, perms, uc->memory_map_mirror(uc, source, target, size, perms));
+}
+
+UNICORN_EXPORT
+uc_err uc_set_context_reg(uc_engine *uc, uc_context *context, int regid, void *const value)
+{
+    // only implement for ARM
+    if (uc->set_context_reg) {
+        return uc->set_context_reg(context, (unsigned int) regid, value);
+    } else {
+        return UC_ERR_ARCH;
+    }
 }
