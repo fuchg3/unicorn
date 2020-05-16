@@ -90,7 +90,6 @@ bool list_remove(struct list *list, void *data)
     }
     return false;
 }
-<<<<<<< HEAD
 
 // returns true if the data exists in the list
 bool list_exists(struct list *list, void *data)
@@ -110,5 +109,3 @@ bool list_exists(struct list *list, void *data)
     }
     return false;
 }
-=======
->>>>>>> modified
