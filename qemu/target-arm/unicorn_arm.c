@@ -217,8 +217,6 @@ static uc_err arm_query(struct uc_struct *uc, uc_query_type type, size_t *result
     }
 }
 
-<<<<<<< HEAD
-=======
 uc_err arm_set_context_reg(struct uc_context *context, unsigned int regid, void *const value) {
     CPUARMState *ptr = (CPUARMState *)context->data;
     if (regid >= UC_ARM_REG_R0 && regid <= UC_ARM_REG_R12) {
@@ -257,7 +255,6 @@ uc_err arm_set_context_reg(struct uc_context *context, unsigned int regid, void 
     return UC_ERR_OK;
 }
 
->>>>>>> modified
 #ifdef TARGET_WORDS_BIGENDIAN
 void armeb_uc_init(struct uc_struct* uc)
 #else
@@ -270,10 +267,7 @@ void arm_uc_init(struct uc_struct* uc)
     uc->reg_read = arm_reg_read;
     uc->reg_write = arm_reg_write;
     uc->reg_reset = arm_reg_reset;
-<<<<<<< HEAD
-=======
     uc->set_context_reg = arm_set_context_reg;
->>>>>>> modified
     uc->set_pc = arm_set_pc;
     uc->stop_interrupt = arm_stop_interrupt;
     uc->release = arm_release;
