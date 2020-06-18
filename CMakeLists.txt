@@ -46,6 +46,9 @@ add_compile_options(
     -Wall -O2
     -fPIC -fpic -fvisibility=hidden
 )
+if (NOT UNICORN_BUILD_SHARED)
+    target_link_libraries(x86_64-softmmu unicorn)
+endif()
 
 add_library(arm-softmmu
     ${CMAKE_CURRENT_SOURCE_DIR}/qemu/cpu-exec.c
@@ -79,6 +82,9 @@ target_include_directories(arm-softmmu PRIVATE
     ${UNICORN_GEN_DIR}/arm-softmmu
     ${CMAKE_CURRENT_SOURCE_DIR}/qemu/target-arm
 )
+if (NOT UNICORN_BUILD_SHARED)
+    target_link_libraries(aarch64-softmmu unicorn)
+endif()
 
 add_library(armeb-softmmu
     ${CMAKE_CURRENT_SOURCE_DIR}/qemu/cpu-exec.c
@@ -112,6 +118,9 @@ target_include_directories(armeb-softmmu PRIVATE
     ${UNICORN_GEN_DIR}/armeb-softmmu
     ${CMAKE_CURRENT_SOURCE_DIR}/qemu/target-arm
 )
+if (NOT UNICORN_BUILD_SHARED)
+    target_link_libraries(mips-softmmu unicorn)
+endif()
 
 set(UNICORN_SRCS_COMMON
     ${CMAKE_CURRENT_SOURCE_DIR}/list.c
@@ -151,6 +160,9 @@ set(UNICORN_SRCS_COMMON
     ${CMAKE_CURRENT_SOURCE_DIR}/qemu/vl.c
     ${CMAKE_CURRENT_SOURCE_DIR}/uc.c
 )
+if (NOT UNICORN_BUILD_SHARED)
+    target_link_libraries(mipsel-softmmu unicorn)
+endif()
 
 set(UNICORN_SRCS
     ${UNICORN_SRCS_COMMON}
@@ -160,10 +172,16 @@ set(UNICORN_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/qemu/qapi-visit.c
     ${CMAKE_CURRENT_SOURCE_DIR}/jni/Unicorn.c
 )
+if (NOT UNICORN_BUILD_SHARED)
+    target_link_libraries(mips64-softmmu unicorn)
+endif()
 
 add_library(unicorn SHARED
     ${UNICORN_SRCS}
 )
+if (NOT UNICORN_BUILD_SHARED)
+    target_link_libraries(mips64el-softmmu unicorn)
+endif()
 
 set(UNICRON_COMPILE_OPTIONS ${UNICRON_COMPILE_OPTIONS} -DUNICORN_HAS_ARM)
 set(UNICRON_LINK_LIBRARIES ${UNICRON_LINK_LIBRARIES} arm-softmmu armeb-softmmu)
