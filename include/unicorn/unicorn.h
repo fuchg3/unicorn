@@ -707,10 +707,12 @@ UNICORN_EXPORT
 uc_err uc_context_alloc(uc_engine *uc, uc_context **context);
 
 /*
- Free the memory allocated by uc_context_alloc & uc_mem_regions.
+ Free the memory allocated by uc_mem_regions.
+ WARNING: After Unicorn 1.0.1rc5, the memory allocated by uc_context_alloc should
+ be free-ed by uc_context_free(). Calling uc_free() may still work, but the result
+ is **undefined**.
 
- @mem: memory allocated by uc_context_alloc (returned in *context), or
-       by uc_mem_regions (returned in *regions)
+ @mem: memory allocated by uc_mem_regions (returned in *regions).
 
  @return UC_ERR_OK on success, or other value on failure (refer to uc_err enum
    for detailed error).
@@ -738,7 +740,7 @@ uc_err uc_context_save(uc_engine *uc, uc_context *context);
  state saved by uc_context_save().
 
  @uc: handle returned by uc_open()
- @buffer: handle returned by uc_context_alloc that has been used with uc_context_save
+ @context: handle returned by uc_context_alloc that has been used with uc_context_save
 
  @return UC_ERR_OK on success, or other value on failure (refer to uc_err enum
    for detailed error).
@@ -768,6 +770,17 @@ uc_err uc_mem_map_mirror(uc_engine *uc, uint64_t source, uint64_t target, size_t
 
 UNICORN_EXPORT
 uc_err uc_set_context_reg(uc_engine *uc, uc_context* context, int regid, void* const value);
+
+/*
+  Free the context allocated by uc_context_alloc().
+
+  @context: handle returned by uc_context_alloc()
+
+  @return UC_ERR_OK on success, or other value on failure (refer to uc_err enum
+   for detailed error).
+*/
+UNICORN_EXPORT
+uc_err uc_context_free(uc_context *context);
 
 #ifdef __cplusplus
 }
