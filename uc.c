@@ -1487,6 +1487,8 @@ uc_err uc_set_context_reg(uc_engine *uc, uc_context *context, int regid, void *c
     } else {
         return UC_ERR_ARCH;
     }
+}
+
 UNICORN_EXPORT
 uc_err uc_context_free(uc_context *context)
 {
